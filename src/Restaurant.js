@@ -29,6 +29,27 @@ class Restaurant extends Component {
   }
 
   render () {
+    if (this.props.params && this.props.params.id) {
+      // detail view
+      return (
+        <div className='Restaurant'>
+          <h1>{this.name}</h1>
+          <h2>{this.tagline}</h2>
+          <table style={tableStyle}>
+            <tbody>
+              <tr>
+                <td>Price: {this.price}</td>
+                <td>Rating: {this.rating}</td>
+                <td>Address: {this.address}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>{this.description}</p>
+          <p>TIMES HERE</p>
+        </div>
+      )
+    }
+
     return (
       <div className='Restaurant' style={restaurantStyle}>
         <h2>{this.name}</h2>
