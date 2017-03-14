@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 
 const restaurantStyle = {
   border: '1px solid black',
@@ -23,6 +24,10 @@ class Restaurant extends Component {
     this.availableTimes = props.availableTimes || []
   }
 
+  get linkUrl () {
+    return ('restaurant/' + this.id)
+  }
+
   render () {
     return (
       <div className='Restaurant' style={restaurantStyle}>
@@ -38,6 +43,7 @@ class Restaurant extends Component {
           </tbody>
         </table>
         <p>{this.description}</p>
+        <Link to={this.linkUrl}>Show Times</Link>
       </div>
     )
   }
@@ -68,6 +74,7 @@ class RestaurantList extends Component {
         {this.items.map(item => (
           <Restaurant
             key={item.id}
+            id={item.id}
             name={item.name}
             tagline={item.tagline}
             price={item.price}
