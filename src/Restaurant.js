@@ -71,28 +71,11 @@ class Restaurant extends Component {
 }
 
 class RestaurantList extends Component {
-  constructor (props) {
-    super(props)
-    this.items = props.items
-
-    // temporary
-    this.items = [{
-      id: 1,
-      name: 'Testaurant',
-      tagline: 'The Testiest',
-      price: '$',
-      rating: '*',
-      address: '123 Fake St.',
-      description: 'A Test Establishment serving No Food!',
-      availableTimes: []
-    }]
-  }
-
   render () {
     return (
       <div className='RestaurantList'>
         <h1>Restaurant List</h1>
-        {this.items.map(item => (
+        {this.props.restaurants.map(item => (
           <Restaurant
             key={item.id}
             id={item.id}
