@@ -12,6 +12,14 @@ const tableStyle = {
 }
 
 class Restaurant extends Component {
+  constructor (props) {
+    super(props)
+
+    if (props.params && props.params.id) {
+      props.fetchRestaurant(props.params.id)
+    }
+  }
+
   get linkUrl () {
     return ('restaurant/' + this.props.id)
   }
@@ -19,7 +27,6 @@ class Restaurant extends Component {
   render () {
     if (this.props.params && this.props.params.id) {
       // detail view
-      this.props.fetchRestaurant(this.props.params.id)
       return (
         <div className='Restaurant'>
           <h1>{this.props.restaurant.name}</h1>
@@ -39,6 +46,7 @@ class Restaurant extends Component {
       )
     }
 
+    // list view
     return (
       <div className='Restaurant' style={restaurantStyle}>
         <h2>{this.props.name}</h2>
