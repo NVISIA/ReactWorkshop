@@ -12,39 +12,28 @@ const tableStyle = {
 }
 
 class Restaurant extends Component {
-  constructor (props) {
-    super(props)
-    this.id = props.id
-    this.name = props.name || ''
-    this.tagline = props.tagline || ''
-    this.price = props.price || ''
-    this.rating = props.rating || ''
-    this.address = props.address || ''
-    this.description = props.description || ''
-    this.availableTimes = props.availableTimes || []
-  }
-
   get linkUrl () {
-    return ('restaurant/' + this.id)
+    return ('restaurant/' + this.props.id)
   }
 
   render () {
     if (this.props.params && this.props.params.id) {
       // detail view
+      this.props.fetchRestaurant(this.props.params.id)
       return (
         <div className='Restaurant'>
-          <h1>{this.name}</h1>
-          <h2>{this.tagline}</h2>
+          <h1>{this.props.restaurant.name}</h1>
+          <h2>{this.props.restaurant.tagline}</h2>
           <table style={tableStyle}>
             <tbody>
               <tr>
-                <td>Price: {this.price}</td>
-                <td>Rating: {this.rating}</td>
-                <td>Address: {this.address}</td>
+                <td>Price: {this.props.restaurant.price}</td>
+                <td>Rating: {this.props.restaurant.rating}</td>
+                <td>Address: {this.props.restaurant.address}</td>
               </tr>
             </tbody>
           </table>
-          <p>{this.description}</p>
+          <p>{this.props.restaurant.description}</p>
           <p>TIMES HERE</p>
         </div>
       )
@@ -52,14 +41,14 @@ class Restaurant extends Component {
 
     return (
       <div className='Restaurant' style={restaurantStyle}>
-        <h2>{this.name}</h2>
-        <h3>{this.tagline}</h3>
+        <h2>{this.props.name}</h2>
+        <h3>{this.props.tagline}</h3>
         <table style={tableStyle}>
           <tbody>
             <tr>
-              <td>Price: {this.price}</td>
-              <td>Rating: {this.rating}</td>
-              <td>Address: {this.address}</td>
+              <td>Price: {this.props.price}</td>
+              <td>Rating: {this.props.rating}</td>
+              <td>Address: {this.props.address}</td>
             </tr>
           </tbody>
         </table>

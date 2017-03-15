@@ -12,11 +12,16 @@ class DataContainer extends Component {
     super(props)
 
     this.state = {
-      restaurants: []
+      restaurants: [],
+      restaurant: {}
     }
   }
 
   componentDidMount () {
+    this.fetchRestaurantList()
+  }
+
+  fetchRestaurantList () {
     fetch('/restaurants').then((response) => {
       return response.json()
     }).then((json) => {
@@ -25,19 +30,21 @@ class DataContainer extends Component {
     })
   }
 
+  fetchRestaurant (id) {
+    fetch('/restaurants/' + id).then((response) => {
+      return response.json()
+    }).then((json) => {
+      const restaurant = json
+      this.setState({ restaurant: restaurant })
+    })
+  }
+
   render () {
-    /*
-     * We need to add the restaurants list to the props that are passed to the
-     * child elements.  React would let us to this like
-     * <RestaurantList restaurants={this.state.restaurants} />
-     * but since it's not us instantiating the child elements but the Router,
-     * we need to clone the props and add our own property, then render the
-     * children with this new props instead of the default one provided by the
-     * Router.
-     */
     const {children} = this.props
     const child = React.cloneElement(children,
-       {restaurants: this.state.restaurants})
+       {fetchRestaurant: this.fetchRestaurant.bind(this),
+        restaurants: this.state.restaurants,
+        restaurant: this.state.restaurant})
 
     return (
       <div>
