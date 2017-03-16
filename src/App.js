@@ -48,8 +48,8 @@ class DataContainer extends Component {
     })
   }
 
-  reserveRestaurant (id, time) {
-    console.log(id, time)
+  reserveRestaurant (reservationData) {
+    console.log(reservationData)
   }
 
   render () {
