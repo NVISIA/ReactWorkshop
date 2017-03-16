@@ -33,22 +33,6 @@ function AvailableTime (props) {
   )
 }
 
-function AvailableTimesList (props) {
-  if (props.restaurant.availableTimes) {
-    return (
-      <div className='AvailableTimesList'>
-        <ul>
-          {props.restaurant.availableTimes.map((item) => {
-            return (<li><AvailableTime value={item} /></li>)
-          })}
-        </ul>
-      </div>
-    )
-  }
-
-  return null
-}
-
 function Price (props) {
   let string = ''
 
@@ -67,6 +51,24 @@ function Rating (props) {
   }
 
   return (<span>{string}</span>)
+}
+
+class AvailableTimesList extends Component {
+  render () {
+    if (this.props.restaurant.availableTimes) {
+      return (
+        <div className='AvailableTimesList'>
+          <ul>
+            {this.props.restaurant.availableTimes.map((item) => {
+              return (<li><AvailableTime value={item} /></li>)
+            })}
+          </ul>
+        </div>
+      )
+    }
+
+    return null
+  }
 }
 
 class Restaurant extends Component {
@@ -112,8 +114,8 @@ class Restaurant extends Component {
         <table style={tableStyle}>
           <tbody>
             <tr>
-              <td>Price: {this.props.price}</td>
-              <td>Rating: {this.props.rating}</td>
+              <td>Price: <Price value={this.props.price} /></td>
+              <td>Rating: <Rating value={this.props.rating} /></td>
               <td>Address: {this.props.address}</td>
             </tr>
           </tbody>
