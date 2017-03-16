@@ -13,6 +13,25 @@ const tableStyle = {
   width: '100%'
 }
 
+function FormattedTime (props) {
+  let hours = parseInt(props.time.getHours())
+  let minutes = props.time.getMinutes().toString()
+  let ampm = 'AM'
+
+  if (hours > 12) {
+    ampm = 'PM'
+    hours -= 12
+  }
+
+  if (minutes.length < 2) {
+    minutes = '0' + minutes
+  }
+
+  return (
+    <span>{hours}:{minutes} {ampm}</span>
+  )
+}
+
 function Price (props) {
   let string = ''
 
@@ -33,9 +52,48 @@ function Rating (props) {
   return (<span>{string}</span>)
 }
 
-// temporary
-function reserveTimeForRestaurant (id, time) {
-  console.log(id, time)
+class ReservationForm extends Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      name: '',
+      phone: '',
+      guests: 1
+    }
+  }
+
+  handleSubmit (e) {
+    e.preventDefault()
+    let reservationData = {}
+    Object.assign(reservationData, this.state)
+    reservationData.restaurantId = this.props.restaurant.id
+    reservationData.time = this.props.desiredTime
+    this.props.reservationFn(reservationData)
+  }
+
+  handleChange (e) {
+    e.preventDefault()
+    this.setState({ [e.target.name]: e.target.vaue })
+  }
+
+  render () {
+    if (!this.props.desiredTime) {
+      return null
+    }
+
+    return (
+      <div className='ReservationForm'>
+        <form onSubmit={this.handleSubmit.bind(this)}>
+          <h4>Reserve {this.props.restaurant.name} at&nbsp;
+            <FormattedTime time={this.props.desiredTime} />
+          </h4>
+          <button type='submit'>Reserve</button>
+          <button type='reset' onClick={this.props.resetFn}>Clear</button>
+        </form>
+      </div>
+    )
+  }
 }
 
 class AvailableTime extends Component {
@@ -47,25 +105,14 @@ class AvailableTime extends Component {
 
   onClick (e) {
     e.preventDefault()
-    reserveTimeForRestaurant(this.props.restaurantId, this.time)
+    this.props.reservationFn(this.time)
   }
 
   render () {
-    let hours = parseInt(this.time.getHours())
-    let minutes = this.time.getMinutes().toString()
-    let ampm = 'AM'
-
-    if (hours > 12) {
-      ampm = 'PM'
-      hours -= 12
-    }
-
-    if (minutes.length < 2) {
-      minutes = '0' + minutes
-    }
-
     return (
-      <span onClick={this.onClick.bind(this)}>{hours}:{minutes} {ampm}</span>
+      <span onClick={this.onClick.bind(this)}>
+        <FormattedTime time={this.time} />
+      </span>
     )
   }
 }
@@ -78,7 +125,7 @@ class AvailableTimesList extends Component {
           <ul>
             {this.props.restaurant.availableTimes.map((item) => {
               return (<li><AvailableTime value={item}
-                restaurantId={this.props.restaurant.id} /></li>)
+                reservationFn={this.props.reservationFn} /></li>)
             })}
           </ul>
         </div>
@@ -96,10 +143,24 @@ class Restaurant extends Component {
     if (props.params && props.params.id) {
       props.fetchRestaurant(props.params.id)
     }
+
+    this.state = {
+      desiredTime: null
+    }
   }
 
   get linkUrl () {
     return ('restaurant/' + this.props.id)
+  }
+
+  requestReservation (time) {
+    const ctime = time
+    this.setState({ desiredTime: ctime })
+  }
+
+  hideForm (e) {
+    e.preventDefault()
+    this.setState({ desiredTime: null })
   }
 
   render () {
@@ -119,7 +180,12 @@ class Restaurant extends Component {
             </tbody>
           </table>
           <p>{this.props.restaurant.description}</p>
-          <AvailableTimesList restaurant={this.props.restaurant} />
+          <AvailableTimesList restaurant={this.props.restaurant}
+            reservationFn={this.requestReservation.bind(this)} />
+          <ReservationForm restaurant={this.props.restaurant}
+            reservationFn={this.props.reserveRestaurant}
+            desiredTime={this.state.desiredTime}
+            resetFn={this.hideForm.bind(this)} />
         </div>
       )
     }

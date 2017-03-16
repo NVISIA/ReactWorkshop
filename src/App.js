@@ -48,10 +48,15 @@ class DataContainer extends Component {
     })
   }
 
+  reserveRestaurant (id, time) {
+    console.log(id, time)
+  }
+
   render () {
     const {children} = this.props
     const child = React.cloneElement(children,
-       {fetchRestaurant: this.fetchRestaurant.bind(this),
+       {reserveRestaurant: this.reserveRestaurant.bind(this),
+        fetchRestaurant: this.fetchRestaurant.bind(this),
         restaurants: this.state.restaurants,
         restaurant: this.state.restaurant})
 
