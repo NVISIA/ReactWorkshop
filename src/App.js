@@ -37,6 +37,15 @@ class DataContainer extends Component {
       const restaurant = json
       this.setState({ restaurant: restaurant })
     })
+
+    fetch('/restaurants/' + id + '/reservations').then((response) => {
+      return response.json()
+    }).then((json) => {
+      const reservations = json
+      const restaurant = this.state.restaurant
+      restaurant.availableTimes = reservations.available
+      this.setState({ restaurant: restaurant })
+    })
   }
 
   render () {
