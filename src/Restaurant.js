@@ -13,26 +13,6 @@ const tableStyle = {
   width: '100%'
 }
 
-function AvailableTime (props) {
-  const time = new Date(props.value)
-  let hours = parseInt(time.getHours())
-  let minutes = time.getMinutes().toString()
-  let ampm = 'AM'
-
-  if (hours > 12) {
-    ampm = 'PM'
-    hours -= 12
-  }
-
-  if (minutes.length < 2) {
-    minutes = '0' + minutes
-  }
-
-  return (
-    <span>{hours}:{minutes} {ampm}</span>
-  )
-}
-
 function Price (props) {
   let string = ''
 
@@ -53,6 +33,43 @@ function Rating (props) {
   return (<span>{string}</span>)
 }
 
+// temporary
+function reserveTimeForRestaurant (id, time) {
+  console.log(id, time)
+}
+
+class AvailableTime extends Component {
+  constructor (props) {
+    super(props)
+
+    this.time = new Date(this.props.value)
+  }
+
+  onClick (e) {
+    e.preventDefault()
+    reserveTimeForRestaurant(this.props.restaurantId, this.time)
+  }
+
+  render () {
+    let hours = parseInt(this.time.getHours())
+    let minutes = this.time.getMinutes().toString()
+    let ampm = 'AM'
+
+    if (hours > 12) {
+      ampm = 'PM'
+      hours -= 12
+    }
+
+    if (minutes.length < 2) {
+      minutes = '0' + minutes
+    }
+
+    return (
+      <span onClick={this.onClick.bind(this)}>{hours}:{minutes} {ampm}</span>
+    )
+  }
+}
+
 class AvailableTimesList extends Component {
   render () {
     if (this.props.restaurant.availableTimes) {
@@ -60,7 +77,8 @@ class AvailableTimesList extends Component {
         <div className='AvailableTimesList'>
           <ul>
             {this.props.restaurant.availableTimes.map((item) => {
-              return (<li><AvailableTime value={item} /></li>)
+              return (<li><AvailableTime value={item}
+                restaurantId={this.props.restaurant.id} /></li>)
             })}
           </ul>
         </div>
