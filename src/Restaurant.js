@@ -70,11 +70,14 @@ class ReservationForm extends Component {
     reservationData.restaurantId = this.props.restaurant.id
     reservationData.time = this.props.desiredTime
     this.props.reservationFn(reservationData)
+
+    // TODO if reservation success, then clear form and indicate success
+    // If failure, report error.
   }
 
   handleChange (e) {
     e.preventDefault()
-    this.setState({ [e.target.name]: e.target.vaue })
+    this.setState({ [e.target.name]: e.target.value })
   }
 
   render () {
@@ -88,6 +91,25 @@ class ReservationForm extends Component {
           <h4>Reserve {this.props.restaurant.name} at&nbsp;
             <FormattedTime time={this.props.desiredTime} />
           </h4>
+          <table>
+            <tbody>
+              <tr>
+                <td><label for='name'>Name for Reservation:</label></td>
+                <td><input type='text' name='name' id='name' value={this.state.name}
+                  onChange={this.handleChange.bind(this)} /></td>
+              </tr>
+              <tr>
+                <td><label for='phone'>Phone Number:</label></td>
+                <td><input type='text' name='phone' id='phone' value={this.state.phone}
+                  onChange={this.handleChange.bind(this)} /></td>
+              </tr>
+              <tr>
+                <td><label for='guests'>Number of Guests:</label></td>
+                <td><input type='number' name='guests' id='phone'
+                  value={this.state.guests} onChange={this.handleChange.bind(this)} /></td>
+              </tr>
+            </tbody>
+          </table>
           <button type='submit'>Reserve</button>
           <button type='reset' onClick={this.props.resetFn}>Clear</button>
         </form>
