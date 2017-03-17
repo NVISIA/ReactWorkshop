@@ -68,11 +68,17 @@ class ReservationForm extends Component {
     let reservationData = {}
     Object.assign(reservationData, this.state)
     reservationData.restaurantId = this.props.restaurant.id
-    reservationData.time = this.props.desiredTime
-    this.props.reservationFn(reservationData)
-
-    // TODO if reservation success, then clear form and indicate success
-    // If failure, report error.
+    reservationData.time = new Date(this.props.desiredTime).getTime()
+    reservationData.guests = this.state.guests
+    this.props.reservationFn(reservationData).then((success) => {
+      if (success) {
+        this.props.resetFn(e)
+        console.log('Reserved ', this.props.restaurant.name, ' at ',
+         reservationData.time)
+      } else {
+        console.log('Error!')
+      }
+    })
   }
 
   handleChange (e) {

@@ -1,4 +1,4 @@
-/* global fetch */
+/* global fetch, Headers */
 import React, {Component} from 'react'
 import { Router, Route, IndexRoute, hashHistory } from 'react-router'
 import 'whatwg-fetch'
@@ -23,7 +23,11 @@ class DataContainer extends Component {
 
   fetchRestaurantList () {
     fetch('/restaurants').then((response) => {
-      return response.json()
+      if (response.ok) {
+        return response.json()
+      }
+
+      throw new Error(response.status + ' ' + response.statusText)
     }).then((json) => {
       const restaurants = json
       this.setState({ restaurants: restaurants })
@@ -32,14 +36,22 @@ class DataContainer extends Component {
 
   fetchRestaurant (id) {
     fetch('/restaurants/' + id).then((response) => {
-      return response.json()
+      if (response.ok) {
+        return response.json()
+      }
+
+      throw new Error(response.status + ' ' + response.statusText)
     }).then((json) => {
       const restaurant = json
       this.setState({ restaurant: restaurant })
     })
 
     fetch('/restaurants/' + id + '/reservations').then((response) => {
-      return response.json()
+      if (response.ok) {
+        return response.json()
+      }
+
+      throw new Error(response.status + ' ' + response.statusText)
     }).then((json) => {
       const reservations = json
       const restaurant = this.state.restaurant
@@ -49,7 +61,22 @@ class DataContainer extends Component {
   }
 
   reserveRestaurant (reservationData) {
-    console.log(reservationData)
+    console.log(JSON.stringify(reservationData))
+
+    let myHeaders = new Headers()
+    myHeaders.append('Content-Type', 'application/json')
+
+    return fetch('/reservations', {
+      method: 'POST',
+      body: JSON.stringify(reservationData),
+      headers: myHeaders
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(response.status + ' ' + response.statusText)
+      }
+
+      return response.ok
+    })
   }
 
   render () {
