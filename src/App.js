@@ -6,6 +6,7 @@ import './App.css'
 
 import { Restaurant, RestaurantList } from './Restaurant'
 import { Reservation } from './Reservation'
+import { PageTemplate } from './PageTemplate'
 
 class DataContainer extends Component {
   constructor (props) {
@@ -88,9 +89,7 @@ class DataContainer extends Component {
         restaurant: this.state.restaurant})
 
     return (
-      <div>
-        {child}
-      </div>
+      <PageTemplate view={child} />
     )
   }
 }

@@ -4,7 +4,6 @@ import { Link } from 'react-router'
 import './Restaurant.css'
 
 const restaurantStyle = {
-  border: '1px solid black',
   width: '40%',
   padding: '4px'
 }
