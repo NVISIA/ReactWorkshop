@@ -3,22 +3,11 @@ body {
     font-family: Georgia, Times, "Times New Roman", serif;
 }
 
-h1 {
-    color: #f2821e;
-    font-family: Georgia, Times, "Times New Roman", serif;
-    margin-bottom: -0.6rem;
-}
-
-h2 {
-    color: #f2821e;
-    font-family: Georgia, Times, "Times New Roman", serif;
-}
-
-.error-box {
+.ErrorBox {
     color: red;
 }
 
-.error-box ul {
+.ErrorBox ul {
     list-style-type: none;
 }
 

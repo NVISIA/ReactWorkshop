@@ -1,16 +1,9 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router'
+
+import { Row, Col12Of12, Col4Of12 } from './WaffleGrid'
+import { ButtonLink } from './ButtonLink'
 
 import './Restaurant.css'
-
-const restaurantStyle = {
-  width: '40%',
-  padding: '4px'
-}
-
-const tableStyle = {
-  width: '100%'
-}
 
 function FormattedTime (props) {
   let hours = parseInt(props.time.getHours())
@@ -49,6 +42,44 @@ function Rating (props) {
   }
 
   return (<span>{string}</span>)
+}
+
+function Tagline (props) {
+  if (props.data) {
+    return (
+      <span>
+        <br />
+        {props.data}
+      </span>
+    )
+  }
+
+  return null
+}
+
+function RestaurantCardTitle (props) {
+  return (
+    <p>
+      <strong>{props.name}</strong>
+      <Tagline data={props.tagline} />
+    </p>
+  )
+}
+
+function RestaurantInfoRow (props) {
+  return (
+    <Row>
+      <Col4Of12>
+        Price: <Price value={props.price} />
+      </Col4Of12>
+      <Col4Of12>
+        Rating: <Rating value={props.rating} />
+      </Col4Of12>
+      <Col4Of12>
+        Address: {props.address}
+      </Col4Of12>
+    </Row>
+  )
 }
 
 class ReservationForm extends Component {
@@ -195,44 +226,40 @@ class Restaurant extends Component {
       // detail view
       return (
         <div className='Restaurant'>
-          <h1>{this.props.restaurant.name}</h1>
-          <h2>{this.props.restaurant.tagline}</h2>
-          <table style={tableStyle}>
-            <tbody>
-              <tr>
-                <td>Price: <Price value={this.props.restaurant.price} /></td>
-                <td>Rating: <Rating value={this.props.restaurant.rating} /></td>
-                <td>Address: {this.props.restaurant.address}</td>
-              </tr>
-            </tbody>
-          </table>
-          <p>{this.props.restaurant.description}</p>
-          <AvailableTimesList restaurant={this.props.restaurant}
-            reservationFn={this.requestReservation.bind(this)} />
-          <ReservationForm restaurant={this.props.restaurant}
-            reservationFn={this.props.reserveRestaurant}
-            desiredTime={this.state.desiredTime}
-            resetFn={this.hideForm.bind(this)} />
+          <Row>
+            <Col12Of12>
+              <RestaurantCardTitle name={this.props.restaurant.name}
+                tagline={this.props.restaurant.tagline} />
+              <RestaurantInfoRow price={this.props.restaurant.price}
+                rating={this.props.restaurant.rating}
+                address={this.props.restaurant.address} />
+              <p>Description: {this.props.restaurant.description}</p>
+              <AvailableTimesList restaurant={this.props.restaurant}
+                reservationFn={this.requestReservation.bind(this)} />
+              <ReservationForm restaurant={this.props.restaurant}
+                reservationFn={this.props.reserveRestaurant}
+                desiredTime={this.state.desiredTime}
+                resetFn={this.hideForm.bind(this)} />
+            </Col12Of12>
+          </Row>
         </div>
       )
     }
 
     // card for list view
     return (
-      <div className='Restaurant' style={restaurantStyle}>
-        <h2>{this.props.name}</h2>
-        <h3>{this.props.tagline}</h3>
-        <table style={tableStyle}>
-          <tbody>
-            <tr>
-              <td>Price: <Price value={this.props.price} /></td>
-              <td>Rating: <Rating value={this.props.rating} /></td>
-              <td>Address: {this.props.address}</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>{this.description}</p>
-        <Link to={this.linkUrl}>Show Times</Link>
+      <div className='Restaurant'>
+        <Row>
+          <Col12Of12>
+            <RestaurantCardTitle name={this.props.name}
+              tagline={this.props.tagline} />
+            <RestaurantInfoRow price={this.props.price}
+              rating={this.props.ating}
+              address={this.props.address} />
+            <p>Description: {this.props.description}</p>
+            <ButtonLink to={this.linkUrl}>Show Times</ButtonLink>
+          </Col12Of12>
+        </Row>
       </div>
     )
   }
@@ -242,7 +269,6 @@ class RestaurantList extends Component {
   render () {
     return (
       <div className='RestaurantList'>
-        <h1>Restaurant List</h1>
         {this.props.restaurants.map(item => (
           <Restaurant
             key={item.id}
