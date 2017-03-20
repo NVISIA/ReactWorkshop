@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
+import { Grid } from './WaffleGrid'
 
 class PageTemplate extends Component {
   render () {
     return (
-      <div>{this.props.view}</div>
+      <Grid>{this.props.view}</Grid>
     )
   }
 }
