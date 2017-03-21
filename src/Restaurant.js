@@ -5,7 +5,23 @@ import { ButtonLink } from './ButtonLink'
 
 import './Restaurant.css'
 
+const errorMessageStyle = {
+  color: 'red'
+}
+
+const successMessageStyle = {
+  color: 'green'
+}
+
+const infoMessageStyle = {
+  color: 'blue'
+}
+
 function FormattedTime (props) {
+  if (!props.time) {
+    return null
+  }
+
   let hours = parseInt(props.time.getHours())
   let minutes = props.time.getMinutes().toString()
   let ampm = 'AM'
@@ -82,6 +98,31 @@ function RestaurantInfoRow (props) {
   )
 }
 
+function StatusMessage (props) {
+  if (props.error) {
+    return (
+      <h4 style={errorMessageStyle}>Failed to reserve {props.restaurantName}
+        at&nbsp;<FormattedTime time={props.desiredTime} />: {props.error}</h4>
+    )
+  } else if (props.success) {
+    return (
+      <h4 style={successMessageStyle}>Reserved {props.restaurantName}
+        at&nbsp;<FormattedTime time={props.desiredTime} />.</h4>
+    )
+  } else if (props.info) {
+    return (
+      <h4 style={infoMessageStyle}>Reserve {props.restaurantName} at&nbsp;
+        <FormattedTime time={props.desiredTime} />: {props.info}</h4>
+    )
+  } else {
+    return (
+      <h4>Reserve {props.restaurantName} at&nbsp;
+        <FormattedTime time={props.desiredTime} />
+      </h4>
+    )
+  }
+}
+
 class ReservationForm extends Component {
   constructor (props) {
     super(props)
@@ -92,7 +133,11 @@ class ReservationForm extends Component {
       guests: 1,
       nameValid: true,
       phoneValid: true,
-      guestsValid: true
+      guestsValid: true,
+      success: null,
+      info: null,
+      error: null,
+      reservedTime: null
     }
   }
 
@@ -105,31 +150,71 @@ class ReservationForm extends Component {
     reservationData.guests = this.state.guests
     this.props.reservationFn(reservationData).then((success) => {
       if (success) {
+        this.clearData()
+        const success = 'Reserved ' + this.props.restaurant.name + ' at ' +
+          reservationData.time
+        console.log(success)
+        this.setState({ success: success, reservedTime: new Date(reservationData.time) })
         this.props.resetFn(e)
-        console.log('Reserved ', this.props.restaurant.name, ' at ',
-         reservationData.time)
       } else {
-        console.log('Error!')
+        const error = 'Error!'
+        console.log(error)
+        this.setState({ error: error })
       }
+    })
+  }
+
+  clearData () {
+    this.setState({
+      name: '',
+      phone: '',
+      guests: 1
+    })
+  }
+
+  clearMessageState () {
+    this.setState({
+      success: null,
+      error: null,
+      info: null,
+      reservedTime: null
     })
   }
 
   handleChange (e) {
     e.preventDefault()
+    this.clearMessageState()
     this.setState({ [e.target.name]: e.target.value })
+  }
+
+  reset (e) {
+    this.clearMessageState()
+    this.clearData()
+    this.props.resetFn(e)
   }
 
   render () {
     if (!this.props.desiredTime) {
+      if (this.state.success) {
+        return (
+          <div className='ReservationForm'>
+            <StatusMessage success={this.state.success} info={this.state.info}
+              error={this.state.error}
+              restaurantName={this.props.restaurant.name}
+              desiredTime={this.state.reservedTime} />
+          </div>
+        )
+      }
+
       return null
     }
 
     return (
       <div className='ReservationForm'>
         <form onSubmit={this.handleSubmit.bind(this)}>
-          <h4>Reserve {this.props.restaurant.name} at&nbsp;
-            <FormattedTime time={this.props.desiredTime} />
-          </h4>
+          <StatusMessage success={null} info={this.state.info}
+            error={this.state.error} restaurantName={this.props.restaurant.name}
+            desiredTime={this.props.desiredTime} />
           <table>
             <tbody>
               <tr>
@@ -159,7 +244,7 @@ class ReservationForm extends Component {
             </tbody>
           </table>
           <button type='submit'>Reserve</button>
-          <button type='reset' onClick={this.props.resetFn}>Clear</button>
+          <button type='reset' onClick={this.reset.bind(this)}>Clear</button>
         </form>
       </div>
     )
