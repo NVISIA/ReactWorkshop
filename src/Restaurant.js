@@ -102,7 +102,8 @@ function StatusMessage (props) {
   if (props.error) {
     return (
       <h4 style={errorMessageStyle}>Failed to reserve {props.restaurantName}
-        &nbsp;at&nbsp;<FormattedTime time={props.desiredTime} />: {props.error}</h4>
+        &nbsp;at&nbsp;<FormattedTime time={props.desiredTime} />:
+        &nbsp;{props.error}</h4>
     )
   } else if (props.success) {
     return (
@@ -143,18 +144,22 @@ class ReservationForm extends Component {
 
   handleSubmit (e) {
     e.preventDefault()
-    let reservationData = {}
-    Object.assign(reservationData, this.state)
-    reservationData.restaurantId = this.props.restaurant.id
-    reservationData.time = new Date(this.props.desiredTime).getTime()
-    reservationData.guests = this.state.guests
+    let reservationData = {
+      name: this.state.name,
+      phone: this.state.phone,
+      guests: this.state.guests,
+      restaurantId: this.props.restaurantId,
+      time: new Date(this.props.desiredTime).getTime()
+    }
+
     this.props.reservationFn(reservationData).then((success) => {
       if (success) {
         this.clearData()
         const success = 'Reserved ' + this.props.restaurant.name + ' at ' +
           reservationData.time
         console.log(success)
-        this.setState({ success: success, reservedTime: new Date(reservationData.time) })
+        this.setState({ success: success,
+           reservedTime: new Date(reservationData.time) })
         this.props.resetFn(e)
       } else {
         const error = 'Error!'
