@@ -89,7 +89,10 @@ class ReservationForm extends Component {
     this.state = {
       name: '',
       phone: '',
-      guests: 1
+      guests: 1,
+      nameValid: true,
+      phoneValid: true,
+      guestsValid: true
     }
   }
 
@@ -130,19 +133,28 @@ class ReservationForm extends Component {
           <table>
             <tbody>
               <tr>
-                <td><label for='name'>Name for Reservation:</label></td>
-                <td><input type='text' name='name' id='name' value={this.state.name}
-                  onChange={this.handleChange.bind(this)} /></td>
+                <td><label htmlFor='name'>Name for Reservation:</label></td>
+                <td><input type='text' name='name' id='name'
+                  value={this.state.name}
+                  onChange={this.handleChange.bind(this)}
+                  minlength='1' pattern='\w+' autocapitalize='words'
+                  autocomplete='name' inputmode='verbatim' required /></td>
               </tr>
               <tr>
-                <td><label for='phone'>Phone Number:</label></td>
-                <td><input type='text' name='phone' id='phone' value={this.state.phone}
-                  onChange={this.handleChange.bind(this)} /></td>
+                <td><label htmlFor='phone'>Phone Number:</label></td>
+                <td><input type='tel' name='phone' id='phone'
+                  value={this.state.phone}
+                  onChange={this.handleChange.bind(this)}
+                  minlength='7' autocomplete='tel' inputmode='tel' required
+                  pattern='^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$' />
+                </td>
               </tr>
               <tr>
-                <td><label for='guests'>Number of Guests:</label></td>
+                <td><label htmlFor='guests'>Number of Guests:</label></td>
                 <td><input type='number' name='guests' id='phone'
-                  value={this.state.guests} onChange={this.handleChange.bind(this)} /></td>
+                  value={this.state.guests}
+                  onChange={this.handleChange.bind(this)} min='1'
+                  inputmode='numeric' required /></td>
               </tr>
             </tbody>
           </table>
