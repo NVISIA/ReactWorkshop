@@ -57,7 +57,7 @@ class PageTemplate extends Component {
             <Panel>
               <h5>There is so much more!</h5>
               <p>This is but one example with ReactJS, there is so much more possible!</p>
-              <ButtonLink href=''>Go to ReactJS Docs</ButtonLink>
+              <ButtonLink href='https://facebook.github.io/react/docs/hello-world.html'>Go to ReactJS Docs</ButtonLink>
             </Panel>
           </Col4Of12>
         </Row>
