@@ -102,21 +102,21 @@ function StatusMessage (props) {
   if (props.error) {
     return (
       <h4 style={errorMessageStyle}>Failed to reserve {props.restaurantName}
-        at&nbsp;<FormattedTime time={props.desiredTime} />: {props.error}</h4>
+        &nbsp;at&nbsp;<FormattedTime time={props.desiredTime} />: {props.error}</h4>
     )
   } else if (props.success) {
     return (
       <h4 style={successMessageStyle}>Reserved {props.restaurantName}
-        at&nbsp;<FormattedTime time={props.desiredTime} />.</h4>
+        &nbsp;at&nbsp;<FormattedTime time={props.desiredTime} />.</h4>
     )
   } else if (props.info) {
     return (
-      <h4 style={infoMessageStyle}>Reserve {props.restaurantName} at&nbsp;
+      <h4 style={infoMessageStyle}>Reserve {props.restaurantName}&nbsp;at&nbsp;
         <FormattedTime time={props.desiredTime} />: {props.info}</h4>
     )
   } else {
     return (
-      <h4>Reserve {props.restaurantName} at&nbsp;
+      <h4>Reserve {props.restaurantName}&nbsp;at&nbsp;
         <FormattedTime time={props.desiredTime} />
       </h4>
     )
