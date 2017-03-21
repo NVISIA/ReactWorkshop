@@ -111,3 +111,4 @@ class App extends Component {
 }
 
 export default App
+export { DataContainer }
