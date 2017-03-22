@@ -99,6 +99,18 @@ describe('DataContainer', () => {
     expect(fetchMock.called('/restaurants/0OcqCLrarG3unXM5/reservations')).toEqual(true)
   })
 
+  it('should reserve a restaurant for a specific time', () => {
+    const restaurantList = <RestaurantList restaurants={TestRestaurants} />
+    const tree = TestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
+    const component = TestUtils.findRenderedComponentWithType(tree, DataContainer)
+    fetchMock.postOnce('/reservations', {ok: true})
+    fetchMock.reset() // need to clear the list of calls made during object construction
+
+    expect(fetchMock.called('/reservations')).toEqual(false)
+    component.reserveRestaurant({})
+    expect(fetchMock.called('/reservations')).toEqual(true)
+  })
+
   afterEach(() => {
     fetchMock.restore()
   })

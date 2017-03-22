@@ -64,8 +64,6 @@ class DataContainer extends Component {
   }
 
   reserveRestaurant (reservationData) {
-    console.log(JSON.stringify(reservationData))
-
     let myHeaders = new Headers()
     myHeaders.append('Content-Type', 'application/json')
 
