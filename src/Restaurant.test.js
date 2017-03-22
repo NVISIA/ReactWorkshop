@@ -2,7 +2,7 @@
 import React from 'react'
 import ReactTestUtils from 'react-addons-test-utils'
 
-import { FormattedTime, Price, Rating } from './Restaurant'
+import { FormattedTime, Price, Rating, Tagline } from './Restaurant'
 
 describe('FormattedTime', () => {
   it('should format time', () => {
@@ -36,6 +36,28 @@ describe('Rating', () => {
 
     expect(result.type).toBe('span')
     expect(result.props.children).toEqual('****')
+  })
+})
+
+describe('Tagline', () => {
+  it('should render taglines', () => {
+    const renderer = ReactTestUtils.createRenderer()
+    renderer.render(<Tagline data={<span>Twelve of them</span>} />)
+    const result = renderer.getRenderOutput()
+
+    expect(result.type).toBe('span')
+    expect(result.props.children).toEqual([
+      <br />,
+      <span>Twelve of them</span>
+    ])
+  })
+
+  it('should render nothing if there\'s no data', () => {
+    const renderer = ReactTestUtils.createRenderer()
+    renderer.render(<Tagline />)
+    const result = renderer.getRenderOutput()
+
+    expect(result).toBeNull
   })
 })
 
