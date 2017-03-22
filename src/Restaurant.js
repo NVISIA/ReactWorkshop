@@ -390,4 +390,4 @@ class RestaurantList extends Component {
   }
 }
 
-export { Restaurant, RestaurantList, ReservationForm, FormattedTime }
+export { Restaurant, RestaurantList, ReservationForm, FormattedTime, Price, Rating }

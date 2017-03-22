@@ -2,7 +2,7 @@
 import React from 'react'
 import ReactTestUtils from 'react-addons-test-utils'
 
-import { FormattedTime } from './Restaurant'
+import { FormattedTime, Price, Rating } from './Restaurant'
 
 describe('FormattedTime', () => {
   it('should format time', () => {
@@ -14,6 +14,28 @@ describe('FormattedTime', () => {
     expect(result.props.children).toEqual([
       4, ':', '00', ' ', 'PM'
     ])
+  })
+})
+
+describe('Price', () => {
+  it('should format prices', () => {
+    const renderer = ReactTestUtils.createRenderer()
+    renderer.render(<Price value='3' />)
+    const result = renderer.getRenderOutput()
+
+    expect(result.type).toBe('span')
+    expect(result.props.children).toEqual('$$$')
+  })
+})
+
+describe('Rating', () => {
+  it('should format ratings', () => {
+    const renderer = ReactTestUtils.createRenderer()
+    renderer.render(<Rating value='75' />)
+    const result = renderer.getRenderOutput()
+
+    expect(result.type).toBe('span')
+    expect(result.props.children).toEqual('****')
   })
 })
 
