@@ -2,7 +2,8 @@
 import React from 'react'
 import ReactTestUtils from 'react-addons-test-utils'
 
-import { FormattedTime, Price, Rating, Tagline } from './Restaurant'
+import { FormattedTime, Price, Rating, Tagline,
+  RestaurantCardTitle } from './Restaurant'
 
 describe('FormattedTime', () => {
   it('should format time', () => {
@@ -58,6 +59,20 @@ describe('Tagline', () => {
     const result = renderer.getRenderOutput()
 
     expect(result).toBeNull
+  })
+})
+
+describe('RestaurantCardTitle', () => {
+  it('should render card titles', () => {
+    const renderer = ReactTestUtils.createRenderer()
+    renderer.render(<RestaurantCardTitle name='stuff' tagline='things' />)
+    const result = renderer.getRenderOutput()
+
+    expect(result.type).toBe('p')
+    expect(result.props.children).toEqual([
+      <strong>stuff</strong>,
+      <Tagline data='things' />
+    ])
   })
 })
 
