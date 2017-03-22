@@ -301,7 +301,9 @@ class Restaurant extends Component {
     super(props)
 
     if (props.params && props.params.id) {
-      props.fetchRestaurant(props.params.id)
+      props.fetchRestaurant(props.params.id).then(function () {
+        props.fetchReservations(props.params.id)
+      })
     }
 
     this.state = {

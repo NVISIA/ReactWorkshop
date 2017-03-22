@@ -6,13 +6,16 @@ import TestUtils from 'react-addons-test-utils'
 import { RestaurantList } from './Restaurant'
 import App, { DataContainer } from './App'
 
-import TestData from './restaurants.json'
+import TestRestaurants from './restaurants.json'
+import TestReservations from './reservations.json'
 
 const fetchMock = require('fetch-mock')
 
 describe('App', () => {
   beforeEach(() => {
-    fetchMock.mock('/restaurants', TestData, {})
+    fetchMock.mock('/restaurants/0OcqCLrarG3unXM5/reservations', TestReservations, {})
+    fetchMock.mock('/restaurants/0OcqCLrarG3unXM5', TestRestaurants[0], {})
+    fetchMock.mock('/restaurants', TestRestaurants, {})
   })
 
   it('renders without crashing', () => {
@@ -27,7 +30,9 @@ describe('App', () => {
 
 describe('DataContainer', () => {
   beforeEach(() => {
-    fetchMock.mock('/restaurants', TestData, {})
+    fetchMock.mock('/restaurants/0OcqCLrarG3unXM5/reservations', TestReservations, {})
+    fetchMock.mock('/restaurants/0OcqCLrarG3unXM5', TestRestaurants[0], {})
+    fetchMock.mock('/restaurants', TestRestaurants, {})
   })
 
   it('should be constructed correctly', () => {
@@ -43,7 +48,7 @@ describe('DataContainer', () => {
   })
 
   it('should call fetchRestaurants after mounting', () => {
-    const restaurantList = <RestaurantList restaurants={TestData} />
+    const restaurantList = <RestaurantList restaurants={TestRestaurants} />
     const tree = TestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
     const component = TestUtils.findRenderedComponentWithType(tree, DataContainer)
 
@@ -54,16 +59,44 @@ describe('DataContainer', () => {
   })
 
   it('should fetch a list of restaurants', () => {
-    const restaurantList = <RestaurantList restaurants={TestData} />
+    const restaurantList = <RestaurantList restaurants={TestRestaurants} />
     const tree = TestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
     const component = TestUtils.findRenderedComponentWithType(tree, DataContainer)
     fetchMock.reset() // need to clear the list of calls made during object construction
 
     expect(fetchMock.called('/restaurants')).toEqual(false)
     component.fetchRestaurantList().then(() => {
-      expect(component.state.restaurants).toEqual(TestData)
+      expect(component.state.restaurants).toEqual(TestRestaurants)
     })
     expect(fetchMock.called('/restaurants')).toEqual(true)
+  })
+
+  it('should fetch a restaurant', () => {
+    const restaurantList = <RestaurantList restaurants={TestRestaurants} />
+    const tree = TestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
+    const component = TestUtils.findRenderedComponentWithType(tree, DataContainer)
+    fetchMock.reset() // need to clear the list of calls made during object construction
+
+    expect(fetchMock.called('/restaurants/0OcqCLrarG3unXM5')).toEqual(false)
+    component.fetchRestaurant('0OcqCLrarG3unXM5').then(() => {
+      expect(component.state.restaurant).toEqual(TestRestaurants[0])
+    })
+
+    expect(fetchMock.called('/restaurants/0OcqCLrarG3unXM5')).toEqual(true)
+  })
+
+  it('should fetch a list of reservations', () => {
+    const restaurantList = <RestaurantList restaurants={TestRestaurants} />
+    const tree = TestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
+    const component = TestUtils.findRenderedComponentWithType(tree, DataContainer)
+    fetchMock.reset() // need to clear the list of calls made during object construction
+
+    expect(fetchMock.called('/restaurants/0OcqCLrarG3unXM5/reservations')).toEqual(false)
+    component.fetchReservations('0OcqCLrarG3unXM5').then(() => {
+      expect(component.state.restaurant.availableTimes).toEqual(TestReservations.available)
+    })
+
+    expect(fetchMock.called('/restaurants/0OcqCLrarG3unXM5/reservations')).toEqual(true)
   })
 
   afterEach(() => {

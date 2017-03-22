@@ -36,7 +36,7 @@ class DataContainer extends Component {
   }
 
   fetchRestaurant (id) {
-    fetch('/restaurants/' + id).then((response) => {
+    return fetch('/restaurants/' + id).then((response) => {
       if (response.ok) {
         return response.json()
       }
@@ -44,10 +44,12 @@ class DataContainer extends Component {
       throw new Error(response.status + ' ' + response.statusText)
     }).then((json) => {
       const restaurant = json
-      this.setState({ restaurant: restaurant })
+      return this.setState({ restaurant: restaurant })
     })
+  }
 
-    fetch('/restaurants/' + id + '/reservations').then((response) => {
+  fetchReservations (id) {
+    return fetch('/restaurants/' + id + '/reservations').then((response) => {
       if (response.ok) {
         return response.json()
       }
@@ -85,6 +87,7 @@ class DataContainer extends Component {
     const child = React.cloneElement(children,
        {reserveRestaurant: this.reserveRestaurant.bind(this),
         fetchRestaurant: this.fetchRestaurant.bind(this),
+        fetchReservations: this.fetchReservations.bind(this),
         restaurants: this.state.restaurants,
         restaurant: this.state.restaurant})
 

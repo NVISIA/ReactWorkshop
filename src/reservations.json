@@ -1,0 +1,59 @@
+{
+  "reservations": [
+    {
+      "restaurantId": "0OcqCLrarG3unXM5",
+      "name": "R",
+      "phone": "4144182822",
+      "guests": 1,
+      "time": 1490133600000,
+      "created": 1490109555196,
+      "_id": "WpDw0ICOKYlJV0Id",
+      "id": "WpDw0ICOKYlJV0Id"
+    },
+    {
+      "restaurantId": "0OcqCLrarG3unXM5",
+      "name": "Grumpy",
+      "phone": "Fat",
+      "guests": 1,
+      "time": 1490142600000,
+      "created": 1490109368950,
+      "_id": "YHvlb6f8TRPyeCwB",
+      "id": "YHvlb6f8TRPyeCwB"
+    },
+    {
+      "restaurantId": "0OcqCLrarG3unXM5",
+      "name": "Test",
+      "phone": "5439964",
+      "guests": 1,
+      "time": 1490151600000,
+      "created": 1490104651661,
+      "_id": "lRU8Ff3ChLCY0yp4",
+      "id": "lRU8Ff3ChLCY0yp4"
+    },
+    {
+      "restaurantId": "0OcqCLrarG3unXM5",
+      "name": "test",
+      "phone": "262-401-5858",
+      "guests": 1,
+      "time": 1490130000000,
+      "created": 1490108019487,
+      "_id": "yVCeRjWGtPogTEG1",
+      "id": "yVCeRjWGtPogTEG1"
+    }
+  ],
+  "available": [
+    1490216400000,
+    1490218200000,
+    1490220000000,
+    1490221800000,
+    1490223600000,
+    1490225400000,
+    1490227200000,
+    1490229000000,
+    1490230800000,
+    1490232600000,
+    1490234400000,
+    1490236200000,
+    1490238000000
+  ]
+}
