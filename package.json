@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "react-addons-test-utils": "file:node_modules/react-addons-test-utils",
     "react-scripts": "0.9.0"
   },
   "dependencies": {
