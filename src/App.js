@@ -23,7 +23,7 @@ class DataContainer extends Component {
   }
 
   fetchRestaurantList () {
-    fetch('/restaurants').then((response) => {
+    return fetch('/restaurants').then((response) => {
       if (response.ok) {
         return response.json()
       }
