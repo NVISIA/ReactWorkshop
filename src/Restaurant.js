@@ -227,7 +227,7 @@ class ReservationForm extends Component {
                 <td><input type='text' name='name' id='name'
                   value={this.state.name}
                   onChange={this.handleChange.bind(this)}
-                  minlength='1' pattern='\w+' autocapitalize='words'
+                  minlength='1' autocapitalize='words'
                   autocomplete='name' inputmode='verbatim' required /></td>
               </tr>
               <tr>
