@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "fetch-mock": "^5.10.0"
   },
   "dependencies": {
     "detect-port": "^1.1.0",
