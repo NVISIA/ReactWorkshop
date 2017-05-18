@@ -1,7 +1,7 @@
 /* global it, describe, expect, beforeEach, afterEach, spyOn */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import TestUtils from 'react-addons-test-utils'
+import ReactTestUtils from 'react-dom/test-utils'
 
 import { RestaurantList } from './Restaurant'
 import App, { DataContainer } from './App'
@@ -37,8 +37,8 @@ describe('DataContainer', () => {
 
   it('should be constructed correctly', () => {
     const restaurantList = <RestaurantList restaurants={[]} />
-    const tree = TestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
-    const component = TestUtils.findRenderedComponentWithType(tree, DataContainer)
+    const tree = ReactTestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
+    const component = ReactTestUtils.findRenderedComponentWithType(tree, DataContainer)
 
     expect(component).toBeDefined()
     expect(component.state.restaurants).toBeDefined()
@@ -49,8 +49,8 @@ describe('DataContainer', () => {
 
   it('should call fetchRestaurants after mounting', () => {
     const restaurantList = <RestaurantList restaurants={TestRestaurants} />
-    const tree = TestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
-    const component = TestUtils.findRenderedComponentWithType(tree, DataContainer)
+    const tree = ReactTestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
+    const component = ReactTestUtils.findRenderedComponentWithType(tree, DataContainer)
 
     spyOn(component, 'fetchRestaurantList').and.callThrough()
     expect(component.fetchRestaurantList).not.toHaveBeenCalled()
@@ -60,8 +60,8 @@ describe('DataContainer', () => {
 
   it('should fetch a list of restaurants', () => {
     const restaurantList = <RestaurantList restaurants={TestRestaurants} />
-    const tree = TestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
-    const component = TestUtils.findRenderedComponentWithType(tree, DataContainer)
+    const tree = ReactTestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
+    const component = ReactTestUtils.findRenderedComponentWithType(tree, DataContainer)
     fetchMock.reset() // need to clear the list of calls made during object construction
 
     expect(fetchMock.called('/restaurants')).toEqual(false)
@@ -73,8 +73,8 @@ describe('DataContainer', () => {
 
   it('should fetch a restaurant', () => {
     const restaurantList = <RestaurantList restaurants={TestRestaurants} />
-    const tree = TestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
-    const component = TestUtils.findRenderedComponentWithType(tree, DataContainer)
+    const tree = ReactTestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
+    const component = ReactTestUtils.findRenderedComponentWithType(tree, DataContainer)
     fetchMock.reset() // need to clear the list of calls made during object construction
 
     expect(fetchMock.called('/restaurants/0OcqCLrarG3unXM5')).toEqual(false)
@@ -87,8 +87,8 @@ describe('DataContainer', () => {
 
   it('should fetch a list of reservations', () => {
     const restaurantList = <RestaurantList restaurants={TestRestaurants} />
-    const tree = TestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
-    const component = TestUtils.findRenderedComponentWithType(tree, DataContainer)
+    const tree = ReactTestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
+    const component = ReactTestUtils.findRenderedComponentWithType(tree, DataContainer)
     fetchMock.reset() // need to clear the list of calls made during object construction
 
     expect(fetchMock.called('/restaurants/0OcqCLrarG3unXM5/reservations')).toEqual(false)
@@ -101,8 +101,8 @@ describe('DataContainer', () => {
 
   it('should reserve a restaurant for a specific time', () => {
     const restaurantList = <RestaurantList restaurants={TestRestaurants} />
-    const tree = TestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
-    const component = TestUtils.findRenderedComponentWithType(tree, DataContainer)
+    const tree = ReactTestUtils.renderIntoDocument(<DataContainer children={restaurantList} />)
+    const component = ReactTestUtils.findRenderedComponentWithType(tree, DataContainer)
     fetchMock.postOnce('/reservations', {ok: true})
     fetchMock.reset() // need to clear the list of calls made during object construction
 
